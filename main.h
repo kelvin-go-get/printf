@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int _pr_int(va_list);
+int _pr_int(va_list arg_list);
 
 #endif
 

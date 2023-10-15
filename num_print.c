@@ -31,7 +31,7 @@ int _pri_int(va_list arg_list)
 	int num = va_arg(arg_list, int), neg = -1;
 
 	/* Handling negative numbers */
-	if (num > 0)
+	if (num < 0)
 	{
 		count = count + _putchar('-');
 		if (num == minInt)

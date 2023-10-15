@@ -3,7 +3,7 @@
 /**
  * dig_pl - finds the first digit's location
  * @num: number
- * @bs: the base of the number
+ * @numbase: the base of the number
  * Return: lct
  */
 size_t dig_pl(size_t num, int numbase)
@@ -49,15 +49,5 @@ int _pri_int(va_list arg_list)
 	}
 
 	return (count);
-}
-
-/**
- * _putchar - print outs a character
- * @c: character expected to be printed
- * Return: character's length
- */
-int _putchar(char ch)
-{
-	return (write(1, &ch, 1));
 }
 

@@ -1,47 +1,28 @@
-# 0x11. C - printf - By Antony Muga & Nicholas Oyengo of ALX
-A collaborative project by ALX Software Engineering to implement the inbuilt `printf` function in c from scratch.
+# printf
+This a repository for the ALX team project for the printf.
+
+The printf() function prints output to stdout, according to format and other arguments passed to printf(). 
+The string format consists of two types of items - characters that will be printed to the screen,
+and format commands that define how the other arguments to printf() are displayed. Basically,
+you specify a format string that has text in it, as well as "special" characters
+that map to the other arguments of printf().
 
 
-## Table of Contents
-<!-- toc -->
+The prototype of this function is: int _printf(const char format, ...);
 
-- [Files](#Files)
-- [change log](#change-log)
-  * [Version 1.0](#001---2023-26-03)
-- [Authors](#Authors)
+This means that it has one mandatory format argument, and an extra number of arguments that can be none, or many.
 
-<!-- tocstop -->
-# Files
+Format of the format string
 
-|          Goto          | Files                                          | Description                                                  |
-| :--------------------: | :--------------------------------------------- | ------------------------------------------------------------ |
-|      [📌](#_printf)      | [_printf.c](./printf.c)                         | Entry point for the `_printf`.                                |
-|      [📌](#_putchar)      | [_putchar.c](./_putchar.c)                         | Custom implementation of the inbuilt `putchar`.                                |
-|   [📌](#main)    | [main.c](./main.c)                 | Tests for `_printf` program.       |
-|   [📌](#main.h)    | [main.h](./main.h)                 | Header file containing all prototypes for `_printf` program.                    |
-|   [📌](#man_3_printf)   | [man_3_printf](./man_3_printf)               | The man page for  `_printf` program.                   |
-| [📌](#printf_binary)  | [printf_binary.c](./printf_binary.c)         | Contains code that prints binary represetation using `%b`. |
-| [📌](#printf_char)  | [printf_char.c](./printf_char.c)         | Contains code that prints a single character using `%c`. |
-| [📌](#printf_hex)  | [printf_hex.c](./printf_hex.c)         | Contains code that prints hexadecimal represetation using `%x` and `%X`.|
-| [📌](#printf_integer)  | [printf_integer.c](./printf_integer.c)         | Contains code that prints an integer using `%d` and `%i`. |
-| [📌](#printf_octal)  | [printf_octal.c](./printf_octal.c)         | Contains code that prints octal represetation using `%o`. |
-| [📌](#printf_pointer)  | [printf_pointer.c](./printf_pointer.c)         | Contains code that prints a pointer using `%p`. |
-| [📌](#printf_reverse)  | [printf_reverse.c](./printf_reverse.c)         | Contains code that prints in reverse using `%r`. |
-| [📌](#printf_string)  | [printf_string.c](./printf_string.c)         | Contains code that prints a string suing `%s`. |
-| [📌](#printf_unsigned)  | [printf_unsigned.c](./printf_unsigned.c)         | Contains code that prints an unsigned integer using `%u`. |
-| [📌](#switch)  | [switch.c](./switch.c)         | Contains code that selects appropriate handler. |
+The format string is a character string starting and ending with double quotes. The format string is composed of zero or more directives; ordinary characters (not %), and conversion specifications, each of which results in fetching zero or more subsequent arguments.
 
+Each conversion specification is introduced by the character % and ends with a conversion specifier. In between there may be (in this order):
 
-# Change Log
+Zero or more flags
 
-## Version 1.0
-- Released version 1.0
-- All code is betty compliant
-- The manual page is present
+An optional field width
 
+An optional precision modifier
 
+An optional length modifier
 
-# Authors
-
-- Antony Muga - [Github](http://github.com/antonymuga) , [Twitter](https://twitter.com/DevAntonyMuga)
-- Nicholas Oyengo - [Github](https://github.com/vintexlens)

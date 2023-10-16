@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <unistd.h>
 
+<<<<<<< HEAD
 
 
 /**
@@ -41,6 +42,14 @@ int _strlenc(const char *s);
 int rev_string(char *s);
 int _strlenc(const char *s);
 int printf_37(void);
+=======
+/* Prototypes */
+size_t dig_pl(size_t num, int numbase);
+int _pr_int(va_list arg_list);
+int _printf(const char *format, ...);
+int _putchar(char c);
+void print_buffer(char buffer[], int *buff_ind);
+>>>>>>> cb39543adf93b31aeb3327dc5e68ae14fdaad9ef
 int printf_char(va_list val);
 int printf_string(va_list val);
 int _putchar(char c);

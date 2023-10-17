@@ -148,3 +148,4 @@ int _hexa_prnt(va_list tp, char dir_to[], char bffr[], int flg, char ch_flg,
 
 	return (us_wrt(0, ind, bffr, flg, wdt, prc, sz));
 }
+

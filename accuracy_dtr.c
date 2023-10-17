@@ -36,3 +36,4 @@ int _prc_gt(const char *format, int *ind, va_list rcd)
 
 	return (prc);
 }
+

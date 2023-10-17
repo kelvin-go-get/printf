@@ -1,117 +1,100 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef FILE_MAIN_H
+#define FILE_MAIN_H
+
+/* Header files */
+#include <unistd.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 
+#define BUFFER_SIZE 1024
 #define UNUSED(x) (void)(x)
-#define BUFF_SIZE 1024
 
-/* FLAGS */
-#define F_MINUS 1
-#define F_PLUS 2
-#define F_ZERO 4
-#define F_HASH 8
-#define F_SPACE 16
+#define SPC 16
+#define HSH 8
+#define ZER 4
+#define MNS 1
+#define PLS 2
 
-/* SIZES */
-#define S_LONG 2
-#define S_SHORT 1
+#define SHRT_S 1
+#define LNG_S 2
 
 /**
- * struct fmt - Struct op
+ * struct frmt - operation of struct
  *
- * @fmt: The format.
- * @fn: The function associated.
+ * @frmt: the format.
+ * @f: associated function.
  */
-struct fmt
+struct frmt
 {
-	char fmt;
-	int (*fn)(va_list, char[], int, int, int, int);
+	char frmt;
+	int (*f)(va_list, char[], int, int, int, int);
 };
 
 
 /**
- * typedef struct fmt fmt_t - Struct op
+ * typedef struct frmt fm_t - operation of struct
  *
- * @fmt: The format.
+ * @frmt: the format of the structure.
  * @fm_t: The function associated.
  */
-typedef struct fmt fmt_t;
+typedef struct frmt fm_t;
 
 int _printf(const char *format, ...);
-int handle_print(const char *fmt, int *i,
-va_list list, char buffer[], int flags, int width, int precision, int size);
+int prnt_hndl(const char *frmt, int *i, va_list rcd,
+		char bffr[], int flg, int wdt, int prc, int sz);
 
-/****************** FUNCTIONS ******************/
+/* Prototypes for printing characters that are non-printable */
+int _nprnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-/* Funtions to print chars and strings */
-int print_char(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_string(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_percent(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+/* Prototypes when printing strings and chars */
+int chr_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int str_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int prcnt_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-/* Functions to print numbers */
-int print_int(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_binary(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_unsigned(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_octal(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_hexadecimal(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_hexa_upper(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+/* Prototypes meant for handling specifiers */
+int _flg_gt(const char *format, int *ind);
+int _wdt_gt(const char *format, int *ind, va_list rcd);
+int _sz_gt(const char *format, int *ind);
+int _prc_gt(const char *format, int *ind, va_list rcd);
 
-int print_hexa(va_list types, char map_to[],
-char buffer[], int flags, char flag_ch, int width, int precision, int size);
+/* Prototypes when printing numbers */
+int _int_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int _bin_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int _uns_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int _oct_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int _hex_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
+int _hex_upp_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-/* Function to print non printable characters */
-int print_non_printable(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+int _hexa_prnt(va_list tp, char dir_to[], char bffr[], int flg, char ch_flg,
+		int wdt, int prc, int sz);
 
-/* Funcion to print memory address */
-int print_pointer(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+/* Prototype to handle printing strings in the reverse order*/
+int rev_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-/* Funciotns to handle other specifiers */
-int get_flags(const char *format, int *i);
-int get_width(const char *format, int *i, va_list list);
-int get_precision(const char *format, int *i, va_list list);
-int get_size(const char *format, int *i);
+/* Prototype meant for handling width */
+int ch_hndl_wrt(char ch, char bffr[], int flg, int wdt, int prc, int sz);
+int nu_wrt(int neg_is, int in, char bffr[], int flg, int wdt, int prc, int sz);
+int n2_wrt(int in, char bffr[], int flg, int wdt, int prc, int lnt, char pd,
+		char ch_ext);
+int ptr_wrt(char bffr[], int in, int lnt, int wdt, int flg, char pd,
+		char ch_ext, int pd_begin);
+int us_wrt(int neg_is, int in, char bffr[], int flg, int wdt, int prc, int sz);
 
-/*Function to print string in reverse*/
-int print_reverse(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+/* Prototypes for file chkcon */
+int _is_dgt(char);
+long int us_cnvrt_sz(unsigned long int n, int sz);
+int _is_prntbl(char);
+long int num_cnvrt_sz(long int n, int sz);
+int affix_hex_cd(char, char[], int);
 
-/*Function to print a string in rot 13*/
-int print_rot13string(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
+/* Prototypes of function to print a string in rot13 */
+int prnt_rot13(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-/* width handler */
-int handle_write_char(char c, char buffer[],
-	int flags, int width, int precision, int size);
-int write_number(int is_positive, int ind, char buffer[],
-	int flags, int width, int precision, int size);
-int write_num(int ind, char bff[], int flags, int width, int precision,
-	int length, char padd, char extra_c);
-int write_pointer(char buffer[], int ind, int length,
-	int width, int flags, char padd, char extra_c, int padd_start);
+/* Prototype for memory address */
+int prnt_ptr(va_list tp, char bffr[], int flg, int wdt, int prc, int sz);
 
-int write_unsgnd(int is_negative, int ind,
-char buffer[],
-	int flags, int width, int precision, int size);
-
-/****************** UTILS ******************/
-int is_printable(char);
-int append_hexa_code(char, char[], int);
-int is_digit(char);
-
-long int convert_size_number(long int num, int size);
-long int convert_size_unsgnd(unsigned long int num, int size);
+void b_prnt(char bffr[], int *ib);
 
 #endif
+

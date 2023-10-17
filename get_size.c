@@ -1,26 +1,26 @@
 #include "main.h"
 
 /**
- * get_size - Calculates the size to cast the argument
- * @format: Formatted string in which to print the arguments
- * @i: List of arguments to be printed.
+ * _sz_gt - evaluates the size to convert the argument
+ * @format: string formatted where we are to print the arguments
+ * @ind: argument list
  *
- * Return: Precision.
+ * Return: sz
  */
-int get_size(const char *format, int *i)
+int _sz_gt(const char *format, int *ind)
 {
-	int curr_i = *i + 1;
-	int size = 0;
+	int cui = *ind + 1, sz = 0;
 
-	if (format[curr_i] == 'l')
-		size = S_LONG;
-	else if (format[curr_i] == 'h')
-		size = S_SHORT;
+	if (format[cui] == 'h')
+		sz = SHRT_S;
+	else if (format[cui] == 'l')
+		sz = LNG_S;
 
-	if (size == 0)
-		*i = curr_i - 1;
+	if (sz == 0)
+		*ind = cui - 1;
 	else
-		*i = curr_i;
+		*ind = cui;
 
-	return (size);
+	return (sz);
 }
+

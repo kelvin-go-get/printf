@@ -1,34 +1,32 @@
 #include "main.h"
 
 /**
- * get_flags - Calculates active flags
- * @format: Formatted string in which to print the arguments
- * @i: take a parameter.
- * Return: Flags:
+ * _flg_gt - evaluates the flags that are active
+ * @format: string formatted.
+ * @ind: parameter.
+ * Return: returns flags:
  */
-int get_flags(const char *format, int *i)
+int _flg_gt(const char *format, int *ind)
 {
-	/* - + 0 # ' ' */
-	/* 1 2 4 8  16 */
-	int j, curr_i;
-	int flags = 0;
-	const char FLAGS_CH[] = {'-', '+', '0', '#', ' ', '\0'};
-	const int FLAGS_ARR[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
+	int i, cui, flg = 0;
+	const int AR_FLG[] = {MNS, PLS, ZER, HSH, SPC, 0};
+	const char CH_FLG[] = {'-', '+', '0', '#', ' ', '\0'};
 
-	for (curr_i = *i + 1; format[curr_i] != '\0'; curr_i++)
+	for (cui = *ind + 1; format[cui] != '\0'; cui++)
 	{
-		for (j = 0; FLAGS_CH[j] != '\0'; j++)
-			if (format[curr_i] == FLAGS_CH[j])
+		for (i = 0; CH_FLG[i] != '\0'; i++)
+			if (format[cui] == CH_FLG[i])
 			{
-				flags |= FLAGS_ARR[j];
+				flg |= AR_FLG[i];
 				break;
 			}
 
-		if (FLAGS_CH[j] == 0)
+		if (CH_FLG[i] == 0)
 			break;
 	}
 
-	*i = curr_i - 1;
+	*ind = cui - 1;
 
-	return (flags);
+	return (flg);
 }
+

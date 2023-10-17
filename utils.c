@@ -1,86 +1,85 @@
 #include "main.h"
 
 /**
- * is_printable - Evaluates if a char is printable
- * @c: Char to be evaluated.
- *
- * Return: 1 if c is printable, 0 otherwise
+ * affix_hex_cd - Affix an ASCII in the hexadecimal format to a buffer
+ * @bffr: char array
+ * @ind: index to start affixing from
+ * @asc_cd: Code of ASCII
+ * Return: Always 3.
  */
-int is_printable(char c)
+int affix_hex_cd(char asc_cd, char bffr[], int ind)
 {
-	if (c >= 32 && c < 127)
-		return (1);
+	int neg = -1, sxtn = 16;
+	char dir_to[] = "0123456789ABCDEF";
+	/* In hexadecimal format, the code is always long by 2 digits */
+	if (asc_cd < 0)
+		asc_cd *= neg;
 
-	return (0);
-}
-
-/**
- * append_hexa_code - Append ascci in hexadecimal code to buffer
- * @buffer: Array of chars.
- * @i: Index at which to start appending.
- * @ascii_code: ASSCI CODE.
- * Return: Always 3
- */
-int append_hexa_code(char ascii_code, char buffer[], int i)
-{
-	char map_to[] = "0123456789ABCDEF";
-	/* The hexa format code is always 2 digits long */
-	if (ascii_code < 0)
-		ascii_code *= -1;
-
-	buffer[i++] = '\\';
-	buffer[i++] = 'x';
-
-	buffer[i++] = map_to[ascii_code / 16];
-	buffer[i] = map_to[ascii_code % 16];
+	bffr[ind++] = '\\';
+	bffr[ind++] = 'x';
+	bffr[ind++] = dir_to[asc_cd / sxtn];
+	bffr[ind] = dir_to[asc_cd % sxtn];
 
 	return (3);
 }
 
 /**
- * is_digit - Verifies if a char is a digit
- * @c: Char to be evaluated
+ * num_cnvrt_sz - converts to the specified size, a number
+ * @n: number to be converted
+ * @sz: size indicator.
  *
- * Return: 1 if c is a digit, 0 otherwise
+ * Return: converted value of n
  */
-int is_digit(char c)
+long int num_cnvrt_sz(long int n, int sz)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
+	if (sz == SHRT_S)
+		return ((short)n);
+	else if (sz == LNG_S)
+		return (n);
 
+	return ((int)n);
+}
+
+/**
+ * _is_dgt - checks to see if char is a digit
+ * @ch: expected char to be checked
+ *
+ * Return: 0 is ch isn't a digit but 1 if it is
+ */
+int _is_dgt(char ch)
+{
+	if (ch <= '9' && ch >= '0')
+		return (1);
 	return (0);
 }
 
 /**
- * convert_size_number - Casts a number to the specified size
- * @num: Number to be casted.
- * @size: Number indicating the type to be casted.
+ * us_cnvrt_sz - converts an unsigned number to the specified size
+ * @n: number expected to be converted
+ * @sz: size indicator
  *
- * Return: Casted value of num
+ * Return: converted number
  */
-long int convert_size_number(long int num, int size)
+long int us_cnvrt_sz(unsigned long int n, int sz)
 {
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((short)num);
+	if (sz == SHRT_S)
+		return ((unsigned short)n);
+	else if (sz == LNG_S)
+		return (n);
 
-	return ((int)num);
+	return ((unsigned int)n);
 }
 
 /**
- * convert_size_unsgnd - Casts a number to the specified size
- * @num: Number to be casted
- * @size: Number indicating the type to be casted
+ * _is_prntbl - checks to see if a character can be printed out.
+ * @ch: character to be printed out
  *
- * Return: Casted value of num
+ * Return: 1 if ch can be printed out, 0 otherwise.
  */
-long int convert_size_unsgnd(unsigned long int num, int size)
+int _is_prntbl(char ch)
 {
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((unsigned short)num);
-
-	return ((unsigned int)num);
+	if (ch < 127 && ch >= 32)
+		return (1);
+	return (0);
 }
+

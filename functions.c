@@ -1,188 +1,180 @@
 #include "main.h"
 
-/** PRINT CHAR **/
-
 /**
- * print_char - Prints a char
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
+ * chr_prnt - the functions prints out a character
+ * @tp: arguments list
+ * @bffr: array to handle the printing
+ * @flg:  evaluates the flags that are active
+ * @wdt: the breadth
+ * @prc: the accuracy requirement
+ * @sz: Size indicator
+ * Return: the counts of character printed
  */
-int print_char(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+int chr_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz)
 {
-	char c = va_arg(types, int);
+	char ch;
 
-	return (handle_write_char(c, buffer, flags, width, precision, size));
+	ch = va_arg(tp, int);
+
+	return (ch_hndl_wrt(ch, bffr, flg, wdt, prc, sz));
 }
-/************************* PRINT A STRING *************************/
+
 /**
- * print_string - Prints a string
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
+ * str_prnt - function that prints strings
+ * @tp: argument list
+ * @bffr: array to handle the printing
+ * @flg: evaluates the flags that are active
+ * @wdt: the breadth
+ * @prc: the accuracy requirement
+ * @sz: size indicator
+ * Return: number of characters to be printed
  */
-int print_string(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+int str_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz)
 {
-	int length = 0, i;
-	char *str = va_arg(types, char *);
+	int len, index;
+	char *s = va_arg(tp, char *);
 
-	UNUSED(buffer);
-	UNUSED(flags);
-	UNUSED(width);
-	UNUSED(precision);
-	UNUSED(size);
-	if (str == NULL)
+	len = 0;
+	UNUSED(sz);
+	UNUSED(prc);
+	UNUSED(bffr);
+	UNUSED(flg);
+	UNUSED(wdt);
+	if (s == NULL)
 	{
-		str = "(null)";
-		if (precision >= 6)
-			str = "      ";
+		s = "(null)";
+		if (prc >= 6)
+			s = "      ";
 	}
+	while (s[len] != '\0')
+		len++;
 
-	while (str[length] != '\0')
-		length++;
+	if (prc < len && prc >= 0)
+		len = prc;
 
-	if (precision >= 0 && precision < length)
-		length = precision;
-
-	if (width > length)
+	if (wdt > len)
 	{
-		if (flags & F_MINUS)
+		if (MNS && flg)
 		{
-			write(1, &str[0], length);
-			for (i = width - length; i > 0; i--)
+			write(1, &s[0], len);
+			for (index = wdt - len; index > 0; index--)
 				write(1, " ", 1);
-			return (width);
+			return (wdt);
 		}
 		else
 		{
-			for (i = width - length; i > 0; i--)
+			for (index = wdt - len; index > 0; index--)
 				write(1, " ", 1);
-			write(1, &str[0], length);
-			return (width);
+			write(1, &s[0], len);
+			return (wdt);
 		}
 	}
 
-	return (write(1, str, length));
+	return (write(1, &s, len));
 }
-/************************* PRINT PERCENT SIGN *************************/
+
 /**
- * print_percent - Prints a percent sign
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
+ * prcnt_prnt - function that prints a percentage sign, %
+ * @tp: argument lists
+ * @bffr: array handling printing
+ * @flg:  evaluates the flags that are active
+ * @wdt: breadth
+ * @prc: accuracy requirement
+ * @sz: Size indicator
+ * Return: counts of character printed
  */
-int print_percent(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+int prcnt_prnt(va_list tp, char bffr[],	int flg, int wdt, int prc, int sz)
 {
-	UNUSED(types);
-	UNUSED(buffer);
-	UNUSED(flags);
-	UNUSED(width);
-	UNUSED(precision);
-	UNUSED(size);
+	UNUSED(wdt);
+	UNUSED(tp);
+	UNUSED(bffr);
+	UNUSED(flg);
+	UNUSED(prc);
+	UNUSED(sz);
 	return (write(1, "%%", 1));
 }
 
-/************************* PRINT INT *************************/
 /**
- * print_int - Print int
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
+ * _int_prnt - function that prints out integers
+ * @tp: argument list
+ * @bffr: array handling
+ * @flg:  evaluates flags that are active
+ * @wdt: the breadth
+ * @prc: accuracy requirement
+ * @sz: Size indicator
+ * Return: counts of characters to be printed
  */
-int print_int(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+int _int_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz)
 {
-	int i = BUFF_SIZE - 2;
-	int is_negative = 0;
-	long int n = va_arg(types, long int);
-	unsigned long int num;
+	int index = BUFFER_SIZE - 2;
+	int neg_real = 0;
+	long int num = va_arg(tp, long int);
+	unsigned long int n;
 
-	n = convert_size_number(n, size);
+	num = num_cnvrt_sz(num, sz);
+	if (num == 0)
+		bffr[index--] = '0';
 
-	if (n == 0)
-		buffer[i--] = '0';
+	bffr[BUFFER_SIZE - 1] = '\0';
+	n = (unsigned long int)num;
 
-	buffer[BUFF_SIZE - 1] = '\0';
-	num = (unsigned long int)n;
-
-	if (n < 0)
+	if (num < 0)
 	{
-		num = (unsigned long int)((-1) * n);
-		is_negative = 1;
+		n = (unsigned long int)(num * (-1));
+		neg_real = 1;
 	}
 
-	while (num > 0)
+	while (n > 0)
 	{
-		buffer[i--] = (num % 10) + '0';
-		num /= 10;
+		bffr[index--] = (n % 10) + '0';
+		n = n / 10;
 	}
 
-	i++;
+	index++;
 
-	return (write_number(is_negative, i, buffer, flags, width, precision, size));
+	return (nu_wrt(neg_real, index, bffr, flg, wdt, prc, sz));
 }
 
-/************************* PRINT BINARY *************************/
 /**
- * print_binary - Prints an unsigned number
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Numbers of char printed.
+ * _bin_prnt - prints a binary
+ * @tp: argument list
+ * @bffr: array to handler
+ * @flg:  evaluates the active flags
+ * @wdt: breadth
+ * @prc: accuracy requirement
+ * @sz: Size indicator
+ * Return: counts of characters printed.
  */
-int print_binary(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+int _bin_prnt(va_list tp, char bffr[], int flg, int wdt, int prc, int sz)
 {
-	unsigned int n, m, i, sum;
-	unsigned int a[32];
-	int count;
+	unsigned int ab[32];
+	int cnt;
+	unsigned int index, num, ml, total;
 
-	UNUSED(buffer);
-	UNUSED(flags);
-	UNUSED(width);
-	UNUSED(precision);
-	UNUSED(size);
+	UNUSED(flg);
+	UNUSED(bffr);
+	UNUSED(sz);
+	UNUSED(wdt);
+	UNUSED(prc);
 
-	n = va_arg(types, unsigned int);
-	m = 2147483648; /* (2 ^ 31) */
-	a[0] = n / m;
-	for (i = 1; i < 32; i++)
+	num = va_arg(tp, unsigned int);
+	ml = 2147483648;
+	ab[0] = num / ml;
+	for (index = 1; index < 32; index++)
 	{
-		m /= 2;
-		a[i] = (n / m) % 2;
+		ml = ml / 2;
+		ab[index] = (num / ml) % 2;
 	}
-	for (i = 0, sum = 0, count = 0; i < 32; i++)
+	for (total = 0, index = 0, cnt = 0; index < 32; index++)
 	{
-		sum += a[i];
-		if (sum || i == 31)
+		total = total + ab[index];
+		if (index == 31 || total)
 		{
-			char z = '0' + a[i];
+			char q = '0' + ab[index];
 
-			write(1, &z, 1);
-			count++;
+			write(1, &q, 1);
+			cnt++;
 		}
 	}
-	return (count);
+	return (cnt);
 }

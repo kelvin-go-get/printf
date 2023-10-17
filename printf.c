@@ -1,66 +1,58 @@
 #include "main.h"
 
-void print_buffer(char buffer[], int *buff_ind);
-
 /**
- * _printf - Printf function
- * @format: format.
- * Return: Printed chars.
+ * _printf - the real printf function
+ * @format: the format.
+ * Return: printed values or char.
  */
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
+	int index, out = 0, out_ch = 0, flg, wdt, prc, sz, ib = 0;
+	va_list rcd;
+	char bffr[BUFFER_SIZE];
 
 	if (format == NULL)
 		return (-1);
-
-	va_start(list, format);
-
-	for (i = 0; format && format[i] != '\0'; i++)
+	va_start(rcd, format);
+	for (index = 0; format[index] != '\0' && format; index++)
 	{
-		if (format[i] != '%')
+		if (format[index] != '%')
 		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			/* write(1, &format[i], 1);*/
-			printed_chars++;
+			bffr[ib++] = format[index];
+			if (ib == BUFFER_SIZE)
+				b_prnt(bffr, &ib);
+			out_ch++;
 		}
 		else
 		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-				flags, width, precision, size);
-			if (printed == -1)
+			b_prnt(bffr, &ib);
+			flg = _flg_gt(format, &index);
+			wdt = _wdt_gt(format, &index, rcd);
+			sz = _sz_gt(format, &index);
+			prc = _prc_gt(format, &index, rcd);
+			++index;
+			out = prnt_hndl(format, &index, rcd, bffr, flg, wdt,
+					prc, sz);
+			if (out == -1)
 				return (-1);
-			printed_chars += printed;
+			out_ch = out_ch + out;
 		}
 	}
-
-	print_buffer(buffer, &buff_ind);
-
-	va_end(list);
-
-	return (printed_chars);
+	b_prnt(bffr, &ib);
+	va_end(rcd);
+	return (out_ch);
 }
 
 /**
- * print_buffer - Prints the contents of the buffer if it exist
- * @buffer: Array of chars
- * @buff_ind: Index at which to add next char, represents the length.
+ * b_prnt - if contents of a buffer exists, it prints them
+ * @bffr: Arrays handling characters
+ * @ib: index.
  */
-void print_buffer(char buffer[], int *buff_ind)
+void b_prnt(char bffr[], int *ib)
 {
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
+	if (*ib > 0)
+		write(1, &bffr[0], *ib);
 
-	*buff_ind = 0;
+	*ib = 0;
 }
+

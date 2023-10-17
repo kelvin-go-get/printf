@@ -1,36 +1,35 @@
 #include "main.h"
 
 /**
- * get_width - Calculates the width for printing
- * @format: Formatted string in which to print the arguments.
- * @i: List of arguments to be printed.
- * @list: list of arguments.
- *
- * Return: width.
+ * _wdt_gt - evaluates the breadth of char or strings to print
+ * @format: formatted string
+ * @ind: arguments list to be printed.
+ * @rcd: argument list
+ * Return: wdt
  */
-int get_width(const char *format, int *i, va_list list)
+int _wdt_gt(const char *format, int *ind, va_list rcd)
 {
-	int curr_i;
-	int width = 0;
+	int cui, wdt = 0;
 
-	for (curr_i = *i + 1; format[curr_i] != '\0'; curr_i++)
+	for (cui = *ind + 1; format[cui] != '\0'; cui++)
 	{
-		if (is_digit(format[curr_i]))
+		if (_is_dgt(format[cui]))
 		{
-			width *= 10;
-			width += format[curr_i] - '0';
+			wdt = wdt * 10;
+			wdt += format[cui] - '0';
 		}
-		else if (format[curr_i] == '*')
+		else if (format[cui] == '*')
 		{
-			curr_i++;
-			width = va_arg(list, int);
+			cui++;
+			wdt = va_arg(rcd, int);
 			break;
 		}
 		else
 			break;
 	}
 
-	*i = curr_i - 1;
+	*ind = cui - 1;
 
-	return (width);
+	return (wdt);
 }
+

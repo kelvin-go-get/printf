@@ -1,19 +1,15 @@
-
-
-
-
-
 /**
- * _strlen - length of a string
- * @s: the string
- * Return: the length
+ * _lngt_str - string's length
+ * @str: the string we're working with
+ * Return: the length is expected to be returned
  */
 
-int _strlen(char *s)
+int _lngt_str(char *str)
 {
-	int i;
+	int index;
 
-	for (i = 0; s[i] != '\0'; i++)
+	for (index = 0; str[index] != '\0'; index++)
 		;
 	return (0);
 }
+

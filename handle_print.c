@@ -1,49 +1,50 @@
 #include "main.h"
 /**
- * handle_print - Prints an argument based on its type
- * @fmt: Formatted string in which to print the arguments.
- * @list: List of arguments to be printed.
- * @ind: ind.
- * @buffer: Buffer array to handle print.
- * @flags: Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: 1 or 2;
+ * prnt_hndl - prints an argument
+ * @frmt: string
+ * @rcd: list.
+ * @i: index
+ * @bffr: array handling
+ * @flg: evaluates the flags
+ * @wdt: the breadth
+ * @prc: accuracy requirement
+ * @sz: Size indicator
+ * Return: 2 or 1;
  */
-int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
-	int flags, int width, int precision, int size)
+int prnt_hndl(const char *frmt, int *i, va_list rcd, char bffr[], int flg,
+		int wdt, int prc, int sz)
 {
-	int i, unknow_len = 0, printed_chars = -1;
-	fmt_t fmt_types[] = {
-		{'c', print_char}, {'s', print_string}, {'%', print_percent},
-		{'i', print_int}, {'d', print_int}, {'b', print_binary},
-		{'u', print_unsigned}, {'o', print_octal}, {'x', print_hexadecimal},
-		{'X', print_hexa_upper}, {'p', print_pointer}, {'S', print_non_printable},
-		{'r', print_reverse}, {'R', print_rot13string}, {'\0', NULL}
+	int ind, len = 0, out_ch = -1;
+	fm_t tp_frmt[] = {
+		{'c', chr_prnt}, {'s', str_prnt}, {'%', prcnt_prnt},
+		{'i', _int_prnt}, {'d', _int_prnt}, {'b', _bin_prnt},
+		{'u', _uns_prnt}, {'o', _oct_prnt}, {'x', _hex_prnt},
+		{'X', _hex_upp_prnt}, {'p', prnt_ptr}, {'S', _nprnt},
+		{'r', rev_prnt}, {'R', prnt_rot13}, {'\0', NULL}
 	};
-	for (i = 0; fmt_types[i].fmt != '\0'; i++)
-		if (fmt[*ind] == fmt_types[i].fmt)
-			return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
+	for (ind = 0; tp_frmt[ind].frmt != '\0'; ind++)
+		if (frmt[*i] == tp_frmt[ind].frmt)
+			return (tp_frmt[ind].f(rcd, bffr, flg, wdt, prc, sz));
 
-	if (fmt_types[i].fmt == '\0')
+	if (tp_frmt[ind].frmt == '\0')
 	{
-		if (fmt[*ind] == '\0')
+		if (frmt[*i] == '\0')
 			return (-1);
-		unknow_len += write(1, "%%", 1);
-		if (fmt[*ind - 1] == ' ')
-			unknow_len += write(1, " ", 1);
-		else if (width)
+		len = len + write(1, "%%", 1);
+		if (frmt[*i - 1] == ' ')
+			len = len + write(1, " ", 1);
+		else if (wdt)
 		{
-			--(*ind);
-			while (fmt[*ind] != ' ' && fmt[*ind] != '%')
-				--(*ind);
-			if (fmt[*ind] == ' ')
-				--(*ind);
+			--(*i);
+			while (frmt[*i] != '%' && frmt[*i] != ' ')
+				--(*i);
+			if (frmt[*i] == ' ')
+				--(*i);
 			return (1);
 		}
-		unknow_len += write(1, &fmt[*ind], 1);
-		return (unknow_len);
+		len = len + write(1, &frmt[*i], 1);
+		return (len);
 	}
-	return (printed_chars);
+	return (out_ch);
 }
+

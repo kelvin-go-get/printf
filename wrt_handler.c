@@ -195,8 +195,8 @@ int us_wrt(int neg_is, int in, char bffr[], int flg, int wdt, int prc, int sz)
  *
  * Return: counts of characters written.
  */
-int ptr_wrt(char bffr[], int in, int len, int wdt, int flg, char pd, char ch_ext,
-		int pd_begin)
+int ptr_wrt(char bffr[], int in, int len, int wdt, int flg, char pd,
+		char ch_ext, int pd_begin)
 {
 	int ind;
 
